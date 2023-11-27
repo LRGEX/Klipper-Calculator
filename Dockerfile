@@ -2,7 +2,7 @@
 FROM php:8.2-apache-bookworm
 
 # Install system dependencies
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y && \
     a2enmod rewrite
 
     
@@ -24,14 +24,10 @@ RUN chown -R www-data:www-data /var/www/html && \
     # Create a backup of the original files to be copied over to the project when the container is started for the first time
     mkdir -p /var/www/html_backup && cp -a . /var/www/html_backup && \
     # Clean up
-    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-# Copy Apache custome configuration files to default location
-COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
-# Copy .htaccess file for apache
-COPY .htaccess /var/www/html/.htaccess
-# Copy the entrypoint script
-COPY docker-entrypoint.sh /opt/ci/docker-entrypoint.sh
+    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
+    mv 000-default.conf /etc/apache2/sites-available/000-default.conf && \
+    mv .htaccess /var/www/html/.htaccess && \
+    mv docker-entrypoint.sh /opt/ci/docker-entrypoint.sh 
 
 # Expose port 80
 EXPOSE 80
