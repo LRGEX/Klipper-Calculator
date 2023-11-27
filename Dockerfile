@@ -33,7 +33,7 @@ RUN chown -R www-data:www-data /var/www/html && \
 EXPOSE 80
 
 # Ensure the entrypoint script is executable
-RUN chmod +x /opt/ci/docker-entrypoint.sh
+RUN chmod +x /var/www/html/docker-entrypoint.sh
 
 # Start Apache server in the foreground
 ENTRYPOINT ["/opt/ci/docker-entrypoint.sh"]
